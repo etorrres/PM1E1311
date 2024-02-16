@@ -3,6 +3,7 @@ package com.uth.pm1e1311;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     EditText nombre, telefono, nota;
     Button btn_salvarContacto, btn_contactosSalvados;
 
-    String mensaje="";
+    String mensaje="", valorPais="";
     Spinner spinnerPaises;
 
     Boolean validacion = false;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         telefono = (EditText) findViewById(R.id.text_telefono);
         nota = (EditText) findViewById(R.id.text_notas);
         btn_salvarContacto = (Button) findViewById(R.id.btn_salvarContacto);
+        btn_contactosSalvados = (Button) findViewById(R.id.btn_contactosSalvados);
 
         btn_salvarContacto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +57,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btn_contactosSalvados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ActivityListContact.class);
+                startActivity(intent);
+            }
+        });
+
     }
     private void RegistrarContacto()
     {
@@ -63,8 +74,23 @@ public class MainActivity extends AppCompatActivity {
 
         String paisSeleccionado = spinnerPaises.getSelectedItem().toString();
 
+
+        if (paisSeleccionado.equals("Honduras (504)")) {
+            valorPais = "504";
+        } else if (paisSeleccionado.equals("Belice (501)")) {
+            valorPais = "501";
+        } else if (paisSeleccionado.equals("Guatemala (502)")) {
+            valorPais = "502";
+        } else if (paisSeleccionado.equals("Nicaragua (505)")) {
+            valorPais = "505";
+        } else if (paisSeleccionado.equals("Costa Rica (506)")) {
+            valorPais = "506";
+        } else if (paisSeleccionado.equals("Pánama (507)")) {
+            valorPais = "507";
+        }
+
         ContentValues valores = new ContentValues();
-        valores.put(Transacciones.pais, paisSeleccionado);
+        valores.put(Transacciones.pais, valorPais);
         valores.put(Transacciones.nombre, nombre.getText().toString());
         valores.put(Transacciones.telefono, telefono.getText().toString());
         valores.put(Transacciones.nota, nota.getText().toString());

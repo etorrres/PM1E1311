@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/searchContact"
         android:layout_width="414dp"
         android:layout_height="42dp"
         android:layout_marginStart="10dp"
@@ -34,12 +34,12 @@
         android:layout_width="401dp"
         android:layout_height="449dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintTop_toBottomOf="@+id/searchContact">
 
         <ListView
             android:id="@+id/listpersons"
