@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PM1E1311</string>
+    <string name="irAtras">Atras</string>
+    <string name="compartirContac">Compartir contacto</string>
+    <string name="eliminarContac">Eliminar contacto</string>
+    <string name="verImage">Ver imagen</string>
+    <string name="updateContac">Actualizar contacto</string>
+    <string name="update">Actualizar</string>
 </resources>
