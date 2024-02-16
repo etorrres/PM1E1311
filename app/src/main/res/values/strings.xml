@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">PM1E1311</string>
+    <string-array name="list_paises">
+        <item>Belice (501)</item>
+        <item>Guatemala (502)</item>
+        <item>El Salvador (503)</item>
+        <item>Honduras (504)</item>
+        <item>Nicaragua (505)</item>
+        <item>Costa Rica (506)</item>
+        <item>Panáma (507)</item>
+    </string-array>
 </resources>
