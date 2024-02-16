@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     static final int peticion_camara = 100;
     static final int peticion_foto = 102;
 
+    Spinner id_pais;
+
     ImageView foto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         btn_salvarContacto = (Button) findViewById(R.id.btn_salvarContacto);
         btn_contactosSalvados = (Button) findViewById(R.id.btn_contactosSalvados);
         btn_foto = (Button) findViewById(R.id.btn_add_foto);
+        id_pais = (Spinner) findViewById(R.id.list_paises);
 
         foto = (ImageView) findViewById(R.id.img_contacto);
 
@@ -122,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         ContentValues valores = new ContentValues();
 
+        valores.put(Transacciones.pais, id_pais.getSelectedItemPosition());
         valores.put(Transacciones.nombre, nombre.getText().toString());
         valores.put(Transacciones.telefono, telefono.getText().toString());
         valores.put(Transacciones.nota, nota.getText().toString());
