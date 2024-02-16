@@ -7,15 +7,16 @@ public class Transacciones
     // ESTRUCTURA DE LA TABLA CONTACTOS
     public static final String TablaContactos = "contactos";
     public static final String id_contacto = "id_contacto";
-    public static final String pais = "id_pais";
+    public static final String pais = "pais";
     public static final String nombre = "nombre";
     public static final String telefono = "telefono";
     public static final String nota = "nota";
+
     public static final String imagen = "imagen";
 
     //CREACION
-    public static final String CreateTableContactos = "Create table "+ TablaContactos +" ("+
-            "id_contacto PRIMARY KEY AUTOINCREMENT, pais INT, nombre TEXT, telefono LONG, nota TEXT, imagen BLOB)";
+    public static final String CreateTableContactos = "Create table "+ TablaContactos +"("+
+            "id_contacto INTEGER PRIMARY KEY AUTOINCREMENT, pais TEXT, nombre TEXT, telefono TEXT, nota TEXT )";
 
     //DROP
     public static final String DropTableContactos = "DROP TABLE IF EXISTS "+TablaContactos;

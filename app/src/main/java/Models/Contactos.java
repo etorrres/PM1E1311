@@ -3,16 +3,18 @@ package Models;
 public class Contactos {
 
     private Integer id_contacto;
+    private String pais;
     private String nombre;
     private String telefono;
-    private Integer nota;
+    private String nota;
     private String imagen;
 
     public Contactos() {
     }
 
-    public Contactos(Integer id_contacto, String nombre, String telefono, Integer nota, String imagen) {
+    public Contactos(Integer id_contacto, String pais, String nombre, String telefono, String nota, String imagen) {
         this.id_contacto = id_contacto;
+        this.pais = pais;
         this.nombre = nombre;
         this.telefono = telefono;
         this.nota = nota;
@@ -25,6 +27,14 @@ public class Contactos {
 
     public void setId_contacto(Integer id_contacto) {
         this.id_contacto = id_contacto;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
     }
 
     public String getNombre() {
@@ -43,11 +53,11 @@ public class Contactos {
         this.telefono = telefono;
     }
 
-    public Integer getNota() {
+    public String getNota() {
         return nota;
     }
 
-    public void setNota(Integer nota) {
+    public void setNota(String nota) {
         this.nota = nota;
     }
 
