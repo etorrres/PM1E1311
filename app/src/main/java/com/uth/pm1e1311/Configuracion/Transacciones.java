@@ -10,7 +10,6 @@ public class Transacciones
     public static final String nombre = "nombre";
     public static final String telefono = "telefono";
     public static final String nota = "nota";
-
     public static final String imagen = "imagen";
 
     //CREACION
