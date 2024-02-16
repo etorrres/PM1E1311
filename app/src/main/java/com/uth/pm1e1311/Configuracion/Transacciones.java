@@ -8,7 +8,7 @@ public class Transacciones
     public static final String TablaContactos = "contactos";
     public static final String id_contacto = "id_contacto";
     public static final String nombre = "nombre";
-    public static final Long telefono = Long.valueOf("telefono");
+    public static final String telefono = "telefono";
     public static final String nota = "nota";
 
     public static final String imagen = "imagen";

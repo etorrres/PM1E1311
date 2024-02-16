@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         nombre = (EditText) findViewById(R.id.text_nombre);
         telefono = (EditText) findViewById(R.id.text_telefono);
         nota = (EditText) findViewById(R.id.text_notas);
+        btn_salvarContacto = (Button) findViewById(R.id.btn_salvarContacto);
 
         btn_salvarContacto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         ContentValues valores = new ContentValues();
         valores.put(Transacciones.nombre, nombre.getText().toString());
-        valores.put(String.valueOf(Transacciones.telefono), telefono.getText().toString());
+        valores.put(Transacciones.telefono, telefono.getText().toString());
         valores.put(Transacciones.nota, nota.getText().toString());
 
         if (nombre == null){
