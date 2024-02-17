@@ -1,5 +1,6 @@
 package com.uth.pm1e1311;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +13,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +29,10 @@ import android.Manifest;
 import com.uth.pm1e1311.Configuracion.SQLiteConexion;
 import com.uth.pm1e1311.Configuracion.Transacciones;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
     EditText nombre, telefono, nota;
     Button btn_imagen, btn_salvarContacto, btn_contactosSalvados;
@@ -33,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
     static final int peticion_camara = 100;
     static final int peticion_foto = 102;
-
     ImageView imageView;
 
     @Override
@@ -56,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
                 String nombreTxt = nombre.getText().toString().trim();
                 String telefonoTxt = telefono.getText().toString().trim();
                 String notaTxt = nota.getText().toString().trim();
+                Drawable img_contacto = imageView.getDrawable();
+
+                File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                File img_archivo = new File(directorio, "contacto.jpg");
+
+
 
                 if (nombreTxt.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Debe escribir un nombre",
@@ -66,8 +79,21 @@ public class MainActivity extends AppCompatActivity {
                 } else if (notaTxt.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Debe escribir una nota",
                             Toast.LENGTH_SHORT).show();
-                } else {
+                } else if (imageView.getDrawable() == null){
+                    Toast.makeText(getApplicationContext(), "Debe tomar una imagen",
+                            Toast.LENGTH_SHORT).show();
+                }else {
                     RegistrarContacto();
+                    try {
+                        FileOutputStream fos = new FileOutputStream(img_archivo);
+                        Bitmap bitmap = ((BitmapDrawable) img_contacto).getBitmap();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
+                        fos.close();
+                    } catch (IOException e){
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Error al Guardar la Imagen",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
