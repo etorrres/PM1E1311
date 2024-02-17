@@ -41,6 +41,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchContact">
 
+
         <ListView
             android:id="@+id/listpersons"
             android:layout_width="match_parent"
