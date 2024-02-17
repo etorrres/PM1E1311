@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -36,7 +37,7 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
     EditText nombre, telefono, nota;
     Button btn_imagen, btn_salvarContacto, btn_contactosSalvados;
-    String valorPais="";
+    String valorPais="", imagen="";
     Spinner spinnerPaises;
 
     static final int peticion_camara = 100;
@@ -66,9 +67,12 @@ public class MainActivity extends AppCompatActivity {
                 Drawable img_contacto = imageView.getDrawable();
 
                 File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                File img_archivo = new File(directorio, "contacto.jpg");
 
+                SQLiteConexion conn = new SQLiteConexion(getApplicationContext(), Transacciones.DBName, null, 1);
+                SQLiteDatabase db = conn.getWritableDatabase();
+                long id_img = DatabaseUtils.queryNumEntries(db, Transacciones.TablaContactos);
 
+                File img_archivo = new File(directorio, "contacto"+id_img+".jpg");
 
                 if (nombreTxt.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Debe escribir un nombre",
@@ -83,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Debe tomar una imagen",
                             Toast.LENGTH_SHORT).show();
                 }else {
-                    RegistrarContacto();
+                    RegistrarContacto(img_archivo.toString());
                     try {
                         FileOutputStream fos = new FileOutputStream(img_archivo);
                         Bitmap bitmap = ((BitmapDrawable) img_contacto).getBitmap();
@@ -114,13 +118,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    private void RegistrarContacto()
+    private void RegistrarContacto(String img_ruta)
     {
         SQLiteConexion conn = new SQLiteConexion(this, Transacciones.DBName, null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
 
         String paisSeleccionado = spinnerPaises.getSelectedItem().toString();
 
+        imagen = img_ruta.toString();
 
         if (paisSeleccionado.equals("Honduras (504)")) {
             valorPais = "504";
@@ -141,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         valores.put(Transacciones.nombre, nombre.getText().toString());
         valores.put(Transacciones.telefono, telefono.getText().toString());
         valores.put(Transacciones.nota, nota.getText().toString());
+        valores.put(Transacciones.imagen, imagen);
 
         long result = db.insert(Transacciones.TablaContactos, Transacciones.id_contacto, valores);
 
@@ -205,6 +211,5 @@ public class MainActivity extends AppCompatActivity {
             imageView.setImageBitmap(imagen);
         }
     }
-
 
 }
