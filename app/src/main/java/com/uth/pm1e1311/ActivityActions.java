@@ -74,7 +74,7 @@ public class ActivityActions extends AppCompatActivity {
 
         Long resultado = Long.valueOf(db.update(Transacciones.TablaContactos, valores, Transacciones.id_contacto + "=?", new String[]{String.valueOf(id_contacto)}));
         db.close();
-        Toast.makeText(getApplicationContext(), "Registro actualizado correctamente " + resultado.toString(),
+        Toast.makeText(getApplicationContext(), "Contacto actualizado correctamente " + resultado.toString(),
                 Toast.LENGTH_LONG).show();
         Intent intent = new Intent(ActivityActions.this, ActivityListContact.class);
         startActivity(intent);

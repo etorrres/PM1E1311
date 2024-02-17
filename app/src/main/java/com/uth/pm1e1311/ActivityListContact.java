@@ -29,6 +29,7 @@ public class ActivityListContact extends AppCompatActivity {
     Integer posicionSeleccionada;
     Button btnActualizarContacto;
     Button btneliminarContacto;
+    Button btnCompartir;
 
     Button btnVolver;
 
@@ -44,6 +45,7 @@ public class ActivityListContact extends AppCompatActivity {
         btnActualizarContacto = findViewById(R.id.btnactualizar);
         btneliminarContacto = findViewById(R.id.btneliminar);
         btnVolver = findViewById(R.id.btnatras);
+        btnCompartir = findViewById(R.id.btncompartir);
 
         obtenerDatos();
 
@@ -72,10 +74,7 @@ public class ActivityListContact extends AppCompatActivity {
             if (posicionSeleccionada != -1) {
                 // Obtener el contacto seleccionado
                 Contactos contactoSeleccionado = lista.get(posicionSeleccionada);
-
-                // Aquí puedes iniciar una nueva actividad para la actualización del contacto
-                // Pasando los detalles del contacto seleccionado a la nueva actividad
-                // Por ejemplo:
+                //Enviar los datos a actualizar
                 Intent intent = new Intent(ActivityListContact.this, ActivityActions.class);
                 intent.putExtra("id", contactoSeleccionado.getId_contacto().toString());
                 intent.putExtra("pais", contactoSeleccionado.getPais());
@@ -92,6 +91,32 @@ public class ActivityListContact extends AppCompatActivity {
         btneliminarContacto.setOnClickListener(view -> eliminarContacto());
 
         btnVolver.setOnClickListener(view -> volverAtras());
+
+
+        //Enviar contacto a otras aplicaciones
+        btnCompartir.setOnClickListener(view -> {
+            if (posicionSeleccionada != null && posicionSeleccionada != -1) {
+                // Obtener el contacto seleccionado
+                Contactos contactoSeleccionado = lista.get(posicionSeleccionada);
+
+                // Crear un Intent para compartir
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+
+                // Construir el texto a compartir con los detalles del contacto
+                String textoCompartir = "Nombre: " + contactoSeleccionado.getNombre() + "\n" +
+                        "Teléfono: " + "+" + contactoSeleccionado.getPais() + contactoSeleccionado.getTelefono() + "\n" +
+                        "Nota: " + contactoSeleccionado.getNota();
+
+                intent.putExtra(Intent.EXTRA_TEXT, textoCompartir);
+
+                // Iniciar la actividad para seleccionar una aplicación para compartir
+                startActivity(Intent.createChooser(intent, "Compartir contacto con"));
+            } else {
+                Toast.makeText(ActivityListContact.this, "Seleccione un contacto primero", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
     //Boton para volver a pantalla principal
     private void volverAtras() {
