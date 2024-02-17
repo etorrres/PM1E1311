@@ -93,7 +93,7 @@ public class ActivityListContact extends AppCompatActivity {
 
         btnVolver.setOnClickListener(view -> volverAtras());
     }
-
+    //Boton para volver a pantalla principal
     private void volverAtras() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
