@@ -19,19 +19,16 @@ public class ActivityActions extends AppCompatActivity {
     EditText pais, nombre, telefono, nota;
     Button btnActualizar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actions);
-
 
         pais = (EditText) findViewById(R.id.editPais);
         nombre = (EditText) findViewById(R.id.editNombre);
         telefono = (EditText) findViewById(R.id.editTelefono);
         nota = (EditText) findViewById(R.id.editNota);
         btnActualizar = (Button) findViewById(R.id.btnactualizardatos);
-
 
         String id_contacto = getIntent().getStringExtra("id");
         String pais2 = getIntent().getStringExtra("pais");
@@ -40,8 +37,7 @@ public class ActivityActions extends AppCompatActivity {
         String nota2 = getIntent().getStringExtra("nota");
 
         if (pais != null && nombre != null && telefono != null && nota != null) {
-            // Aquí puedes hacer lo que necesites con la información extra recibida
-            // Por ejemplo, puedes mostrarla en un TextView
+
             pais.setText(pais2);
             nombre.setText(nombre2);
             telefono.setText(telefono2);
@@ -56,12 +52,7 @@ public class ActivityActions extends AppCompatActivity {
                         , telefono.getText().toString(), nota.getText().toString());
             }
         });
-
-
-
-
     }
-
     private void actualizarPersona(String id_contacto, String pais2, String nombre2, String telefono2, String nota2) {
         SQLiteConexion conexion = new SQLiteConexion(this, Transacciones.DBName, null, 1);
         SQLiteDatabase db = conexion.getWritableDatabase();

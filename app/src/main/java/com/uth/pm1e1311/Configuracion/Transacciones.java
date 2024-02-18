@@ -11,12 +11,11 @@ public class Transacciones
     public static final String nombre = "nombre";
     public static final String telefono = "telefono";
     public static final String nota = "nota";
-
     public static final String imagen = "imagen";
 
     //CREACION
     public static final String CreateTableContactos = "Create table "+ TablaContactos +"("+
-            "id_contacto INTEGER PRIMARY KEY AUTOINCREMENT, pais TEXT, nombre TEXT, telefono TEXT, nota TEXT )";
+            "id_contacto INTEGER PRIMARY KEY AUTOINCREMENT, pais TEXT, nombre TEXT, telefono TEXT, nota TEXT, imagen TEXT)";
 
     //DROP
     public static final String DropTableContactos = "DROP TABLE IF EXISTS "+TablaContactos;

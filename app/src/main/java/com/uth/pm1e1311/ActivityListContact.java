@@ -1,13 +1,19 @@
 package com.uth.pm1e1311;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -30,9 +36,7 @@ public class ActivityListContact extends AppCompatActivity {
     Button btnActualizarContacto;
     Button btneliminarContacto;
     Button btnCompartir;
-
     Button btnVolver;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +53,11 @@ public class ActivityListContact extends AppCompatActivity {
 
         obtenerDatos();
 
-        // Configurar el TextChangeListener para el SearchView
+        // Configurando el TextChangeListener para el SearchView
         buscarContacto.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // No necesitas implementar nada aquí
+
                 return false;
             }
 
@@ -92,7 +96,6 @@ public class ActivityListContact extends AppCompatActivity {
 
         btnVolver.setOnClickListener(view -> volverAtras());
 
-
         //Enviar contacto a otras aplicaciones
         btnCompartir.setOnClickListener(view -> {
             if (posicionSeleccionada != null && posicionSeleccionada != -1) {
@@ -118,12 +121,12 @@ public class ActivityListContact extends AppCompatActivity {
         });
 
     }
+
     //Boton para volver a pantalla principal
     private void volverAtras() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
-
 
     private void eliminarContacto() {
         if (posicionSeleccionada != -1) {
@@ -145,8 +148,6 @@ public class ActivityListContact extends AppCompatActivity {
             Toast.makeText(ActivityListContact.this, "Seleccione un contacto primero", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
     private void obtenerDatos() {
         SQLiteDatabase db = conexion.getReadableDatabase();
