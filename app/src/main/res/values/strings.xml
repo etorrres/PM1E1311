@@ -5,6 +5,7 @@
     <string name="eliminarContac">Eliminar contacto</string>
     <string name="verImage">Ver Imagen</string>
     <string name="updateContac">Actualizar contacto</string>
+    <string name="btnLlamar">Llamar</string>
     <string-array name="list_paises">
         <item>Belice (501)</item>
         <item>Guatemala (502)</item>

@@ -3,10 +3,13 @@ package com.uth.pm1e1311;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -37,6 +41,8 @@ public class ActivityListContact extends AppCompatActivity {
     Button btneliminarContacto;
     Button btnCompartir;
     Button btnVolver;
+    Button btnLlamar;
+    Button verImagen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,8 @@ public class ActivityListContact extends AppCompatActivity {
         btneliminarContacto = findViewById(R.id.btneliminar);
         btnVolver = findViewById(R.id.btnatras);
         btnCompartir = findViewById(R.id.btncompartir);
+        btnLlamar = findViewById(R.id.btnllamar);
+        verImagen = findViewById(R.id.btnverimagen);
 
         obtenerDatos();
 
@@ -73,6 +81,8 @@ public class ActivityListContact extends AppCompatActivity {
             // Guardar la posición del elemento seleccionado
             posicionSeleccionada = position;
         });
+
+        btnLlamar.setOnClickListener(v -> llamar());
 
         btnActualizarContacto.setOnClickListener(v -> {
             if (posicionSeleccionada != -1) {
@@ -117,6 +127,29 @@ public class ActivityListContact extends AppCompatActivity {
                 startActivity(Intent.createChooser(intent, "Compartir contacto con"));
             } else {
                 Toast.makeText(ActivityListContact.this, "Seleccione un contacto primero", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        //Accion para ver la imagen
+        verImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (posicionSeleccionada != null && posicionSeleccionada != -1) {
+
+                    // Obtener la ruta de la imagen del contacto seleccionado
+                    String imagePath = lista.get(posicionSeleccionada).getImagen();
+
+                    if (imagePath != null && !imagePath.isEmpty()) {
+                        // Mostrar la imagen del contacto
+                        mostrarImagen(imagePath);
+                    } else {
+                        Toast.makeText(ActivityListContact.this, "No se encontró la imagen del contacto", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(ActivityListContact.this, "Seleccione un contacto primero", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -213,4 +246,38 @@ public class ActivityListContact extends AppCompatActivity {
         cursor.close();
         LlenarData(); // Actualizar la lista con los resultados de búsqueda
     }
+
+    public void llamar(){
+
+         if (posicionSeleccionada!=-1){
+             Contactos contactoSeleccionado = lista.get(posicionSeleccionada);
+             String telefono = "tel:"+contactoSeleccionado.getTelefono();
+             Intent llamada = new Intent(Intent.ACTION_CALL);
+             llamada.setData(Uri.parse(telefono));
+             startActivity(llamada);
+         }else{
+             Toast.makeText(ActivityListContact.this, "Seleccione un contacto primero", Toast.LENGTH_SHORT).show();
+         }
+
+    }
+
+    private void mostrarImagen(String imagePath) {
+        // Crear un diálogo personalizado
+        Dialog dialog = new Dialog(ActivityListContact.this);
+        dialog.setContentView(R.layout.dialog_image); // Definir el layout del diálogo
+        dialog.setCancelable(true);
+
+        // Inicializar ImageView dentro del diálogo
+        ImageView imageView = dialog.findViewById(R.id.imageViewC);
+
+        // Cargar la imagen del contacto en el ImageView
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        imageView.setImageBitmap(bitmap);
+
+        // Mostrar el diálogo
+        dialog.show();
+    }
+
+
+
 }
