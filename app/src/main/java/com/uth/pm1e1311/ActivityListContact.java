@@ -1,10 +1,13 @@
 package com.uth.pm1e1311;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.uth.pm1e1311.Configuracion.SQLiteConexion;
 import com.uth.pm1e1311.Configuracion.Transacciones;
@@ -28,8 +32,12 @@ public class ActivityListContact extends AppCompatActivity {
     ArrayList<Contactos> lista;
     ArrayList<String> Arreglo;
     SearchView buscarContacto;
-    String contactoBuscado;
+    Integer posicionSeleccionada;
     Button btnActualizarContacto;
+    Button btneliminarContacto;
+    Button btnCompartir;
+    Button btnVolver;
+    Button btnLlamar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +48,18 @@ public class ActivityListContact extends AppCompatActivity {
         listpersonas = findViewById(R.id.listpersons);
         buscarContacto = findViewById(R.id.searchContact);
         btnActualizarContacto = findViewById(R.id.btnactualizar);
+        btneliminarContacto = findViewById(R.id.btneliminar);
+        btnVolver = findViewById(R.id.btnatras);
+        btnCompartir = findViewById(R.id.btncompartir);
+        btnLlamar = findViewById(R.id.btnllamar);
 
         obtenerDatos();
 
-        // Configurar el TextChangeListener para el SearchView
+        // Configurando el TextChangeListener para el SearchView
         buscarContacto.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // No necesitas implementar nada aquí
+
                 return false;
             }
 
@@ -59,31 +71,107 @@ public class ActivityListContact extends AppCompatActivity {
             }
         });
 
-        listpersonas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listpersonas.setOnItemClickListener((parent, view, position, id) -> {
+            // Guardar la posición del elemento seleccionado
+            posicionSeleccionada = position;
+        });
+
+        btnLlamar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Obtener la persona seleccionada
-                Contactos personaSeleccionada = lista.get(position);
+            public void onClick(View v) {
+                if (posicionSeleccionada!=-1){
+                    Contactos contactoSeleccionado = lista.get(posicionSeleccionada);
+                    String telefono = "tel:"+contactoSeleccionado.getTelefono();
 
-                Intent intent = new Intent(ActivityListContact.this, ActivityActions.class);
+                    Intent llamada = new Intent(Intent.ACTION_CALL);
+                    llamada.setData(Uri.parse(telefono));
+                    startActivity(llamada);
 
-                // Pasar la información a través del Intent
-                intent.putExtra("id", personaSeleccionada.getId_contacto().toString());
-                intent.putExtra("nombre", personaSeleccionada.getNombre());
-                intent.putExtra("telefono", personaSeleccionada.getTelefono().toString());
-                intent.putExtra("nota", personaSeleccionada.getNota());
-
-                // Iniciar la nueva actividad
-                startActivity(intent);
-                finish();
+                }else{
+                    Toast.makeText(ActivityListContact.this, "Seleccione un contacto primero", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+        btnActualizarContacto.setOnClickListener(v -> {
+            if (posicionSeleccionada != -1) {
+                // Obtener el contacto seleccionado
+                Contactos contactoSeleccionado = lista.get(posicionSeleccionada);
+                //Enviar los datos a actualizar
+                Intent intent = new Intent(ActivityListContact.this, ActivityActions.class);
+                intent.putExtra("id", contactoSeleccionado.getId_contacto().toString());
+                intent.putExtra("pais", contactoSeleccionado.getPais());
+                intent.putExtra("nombre", contactoSeleccionado.getNombre());
+                intent.putExtra("telefono", contactoSeleccionado.getTelefono());
+                intent.putExtra("nota", contactoSeleccionado.getNota());
+
+                startActivity(intent);
+            } else {
+                Toast.makeText(ActivityListContact.this, "Seleccione un contacto primero", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btneliminarContacto.setOnClickListener(view -> eliminarContacto());
+
+        btnVolver.setOnClickListener(view -> volverAtras());
+
+        //Enviar contacto a otras aplicaciones
+        btnCompartir.setOnClickListener(view -> {
+            if (posicionSeleccionada != null && posicionSeleccionada != -1) {
+                // Obtener el contacto seleccionado
+                Contactos contactoSeleccionado = lista.get(posicionSeleccionada);
+
+                // Crear un Intent para compartir
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+
+                // Construir el texto a compartir con los detalles del contacto
+                String textoCompartir = "Nombre: " + contactoSeleccionado.getNombre() + "\n" +
+                        "Teléfono: " + "+" + contactoSeleccionado.getPais() + contactoSeleccionado.getTelefono() + "\n" +
+                        "Nota: " + contactoSeleccionado.getNota();
+
+                intent.putExtra(Intent.EXTRA_TEXT, textoCompartir);
+
+                // Iniciar la actividad para seleccionar una aplicación para compartir
+                startActivity(Intent.createChooser(intent, "Compartir contacto con"));
+            } else {
+                Toast.makeText(ActivityListContact.this, "Seleccione un contacto primero", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    //Boton para volver a pantalla principal
+    private void volverAtras() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void eliminarContacto() {
+        if (posicionSeleccionada != -1) {
+            Contactos contactoEliminar = lista.get(posicionSeleccionada);
+            SQLiteDatabase db = conexion.getWritableDatabase();
+            // Condición de eliminación
+            String whereClause = Transacciones.id_contacto + " = ?";
+            // Argumentos de la condición
+            String[] whereArgs = {String.valueOf(contactoEliminar.getId_contacto())};
+            // Ejecutar la eliminación
+            int result = db.delete(Transacciones.TablaContactos, whereClause, whereArgs);
+            if (result > 0) {
+                Toast.makeText(ActivityListContact.this, "Contacto eliminado correctamente", Toast.LENGTH_SHORT).show();
+                obtenerDatos(); // Actualizar la lista después de eliminar el contacto
+            } else {
+                Toast.makeText(ActivityListContact.this, "Error al eliminar el contacto", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(ActivityListContact.this, "Seleccione un contacto primero", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void obtenerDatos() {
         SQLiteDatabase db = conexion.getReadableDatabase();
-        Contactos contacto = null;
-        lista = new ArrayList<Contactos>();
+        Contactos contacto;
+        lista = new ArrayList<>();
 
         //Cursor de base de datos para recorrer los datos
         Cursor cursor = db.rawQuery(Transacciones.SelectAllContactos, null);
@@ -104,10 +192,10 @@ public class ActivityListContact extends AppCompatActivity {
     }
 
     private void LlenarData() {
-        Arreglo = new ArrayList<String>();
+        Arreglo = new ArrayList<>();
         for (int i = 0; i < lista.size(); i++) {
             Arreglo.add( lista.get(i).getNombre() + " | " +
-                    lista.get(i).getPais() + "" +
+                    lista.get(i).getPais() +
                     lista.get(i).getTelefono() + "\n" +
                     lista.get(i).getNota() + "\n");
         }
@@ -144,4 +232,21 @@ public class ActivityListContact extends AppCompatActivity {
         cursor.close();
         LlenarData(); // Actualizar la lista con los resultados de búsqueda
     }
+
+    public void llamar(){
+
+         if (posicionSeleccionada!=-1){
+             Contactos contactoSeleccionado = lista.get(posicionSeleccionada);
+             String telefono = "tel:"+contactoSeleccionado.getTelefono();
+
+             Intent llamada = new Intent(Intent.ACTION_CALL);
+             llamada.setData(Uri.parse(telefono));
+             startActivity(llamada);
+
+         }else{
+             Toast.makeText(ActivityListContact.this, "Seleccione un contacto primero", Toast.LENGTH_SHORT).show();
+         }
+
+    }
+
 }

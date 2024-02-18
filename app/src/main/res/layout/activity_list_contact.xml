@@ -8,19 +8,17 @@
 
     <Button
         android:id="@+id/btnatras"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="300dp"
         android:text="@string/irAtras"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <SearchView
         android:id="@+id/searchContact"
-        android:layout_width="414dp"
+        android:layout_width="0dp"
         android:layout_height="42dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
@@ -31,11 +29,11 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="401dp"
-        android:layout_height="449dp"
-        android:layout_marginStart="10dp"
+        android:layout_width="376dp"
+        android:layout_height="441dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="30dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,9 +48,9 @@
 
     <Button
         android:id="@+id/btncompartir"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:text="@string/compartirContac"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,21 +58,19 @@
 
     <Button
         android:id="@+id/btnverimagen"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
         android:text="@string/verImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btncompartir"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
         android:id="@+id/btneliminar"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="15dp"
         android:text="@string/eliminarContac"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,13 +78,21 @@
 
     <Button
         android:id="@+id/btnactualizar"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
         android:text="@string/updateContac"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btneliminar"
         app:layout_constraintTop_toBottomOf="@+id/btnverimagen" />
+
+    <Button
+        android:id="@+id/btnllamar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/btnLlamar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
